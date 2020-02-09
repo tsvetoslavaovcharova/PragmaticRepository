@@ -1,0 +1,96 @@
+CREATE DATABASE car_shop;
+
+CREATE TABLE additional_features (
+    id int NOT NULL AUTO_INCREMENT,
+    additional_features_name varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE addresses (
+    id int NOT NULL AUTO_INCREMENT,
+	town varchar(255) NOT NULL,
+    quarter varchar(255) NOT NULL,
+	street varchar(255),
+	street_number int,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE users (
+    id int NOT NULL AUTO_INCREMENT,
+	username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	years int NOT NULL,
+    firstname varchar(255) NOT NULL,
+    lastname varchar(255) NOT NULL,
+	address_id int NOT NULL,
+    gender VARCHAR(1) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (address_id) REFERENCES addresses(id)
+);
+
+CREATE TABLE cars (
+    id int NOT NULL AUTO_INCREMENT,
+	color varchar(255) NOT NULL,
+    brand varchar(255) NOT NULL,
+    model varchar(255) NOT NULL,
+    year int NOT NULL,
+	additional_feature_id int,
+    cubic_capacity int NOT NULL,
+    power int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (additional_feature_id) REFERENCES additional_features(id)
+);
+
+CREATE TABLE car_additional_features (
+    id int NOT NULL AUTO_INCREMENT,
+	car_id int NOT NULL,
+	additional_feature_id int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (car_id) REFERENCES cars(id),
+    FOREIGN KEY (additional_feature_id) REFERENCES additional_features(id)
+);
+
+CREATE TABLE ads (
+    id int NOT NULL AUTO_INCREMENT,
+	description varchar(255) NOT NULL,
+	adds_date DATETIME NOT NULL,
+    car_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (car_id) REFERENCES cars(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+INSERT INTO addresses (town, quarter, street, street_number)
+VALUES ('Sofia', 'Mladost 4', 'Al.Tanev', 3),
+('Sofia', 'Lulin', 'Ivan Vazov', 36),
+('Varna', 'Dunav', 'Rakovski', 5);
+
+INSERT INTO additional_features (additional_features_name)
+VALUES ('4x4'),
+('CD player'),
+('USB'),
+('ESP');
+
+INSERT INTO cars (color, brand, model, year, cubic_capacity, power)
+VALUES ('black', 'BMW', 'X5', 2018, 1600, 150),
+('white', 'Opel', 'Astra', 2010, 1000, 110);
+
+INSERT INTO cars (color, brand, model, year, cubic_capacity, power, additional_feature_id)
+VALUES('blue', 'Toyota', 'Corolla', 2014, 1400, 90, 1),
+('black', 'Toyota', 'Avensis', 2010, 1600, 160, 2);
+
+INSERT INTO car_additional_features (car_id, additional_feature_id)
+VALUES(3, 3),
+(4,2);
+
+INSERT INTO users (username, password, email, years, firstname, lastname, address_id, gender )
+VALUES ('ivanivanov', '12345', 'ivan.ivanov@abv.bg', 1960, 'Ivan', 'Ivanov',1, 'M'),
+ ('maringeorgiev', '12345', 'marin.georgiev@abv.bg', 1994, 'Marin', 'Georgiev',2, 'M'),
+ ('mariaivanova', '111111', 'maria.ivanova@abv.bg', 1970, 'Maria', 'Ivanova',3, 'F');
+ 
+INSERT INTO ads (description, adds_date, car_id, user_id)
+VALUES ('Sale BMW X5', '2019-11-09 05:12:41', 1, 1),
+('Sale Opel Astra', '2019-11-09 11:45:21', 2, 2),
+('Sale Toyota Avensis', '2020-01-09 15:15:24', 3, 3);
