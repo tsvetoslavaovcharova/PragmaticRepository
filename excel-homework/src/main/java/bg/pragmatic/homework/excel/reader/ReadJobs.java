@@ -32,17 +32,12 @@ public class ReadJobs {
             int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
             for (int i = 1; i <= rowCount; i++) {
                 Row row = sheet.getRow(i);
+                profession = row.getCell(0).getStringCellValue();
+                category = row.getCell(1).getStringCellValue();
+                yearsОfЕxperience = (int) row.getCell(2).getNumericCellValue();
+                name = row.getCell(3).getStringCellValue();
 
-                int dsfds=row.getLastCellNum();
-                for (int j = 0; j < row.getLastCellNum(); j++) {
-                    profession = row.getCell(j).getStringCellValue();
-                    category = row.getCell(j + 1).getStringCellValue();
-                    yearsОfЕxperience = (int) row.getCell(j + 2).getNumericCellValue();
-                    name = row.getCell(j).getStringCellValue();
-
-                }
-                Job c = new Job(profession, category, yearsОfЕxperience, name);
-                jobs.add(c);
+                jobs.add(new Job(profession, category, yearsОfЕxperience, name));
             }
             fis.close();
 
